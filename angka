@@ -1,0 +1,25 @@
+from threading import Thread, Lock
+
+counter = 0
+lock = Lock()
+
+def print_numbers(n, lock):
+    global counter
+    for i in range(n):
+        lock.acquire()
+        if counter < n:
+            print(counter+1)
+            counter += 1
+            lock.release()
+
+t1 = Thread(target=print_numbers, args=(10, lock))
+t2 = Thread(target=print_numbers, args=(10, lock))
+t3 = Thread(target=print_numbers, args=(10, lock))
+
+t1.start()
+t2.start()
+t3.start()
+
+t1.join()
+t2.join()
+t3.join()
